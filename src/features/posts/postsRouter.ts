@@ -32,3 +32,5 @@ export const createPostsRouter: CreateRouter = ({ postsService, logger }) => {
 // @ts-ignore
 createPostsRouter[RESOLVER] = {};
 
+
+export type PostsRouter = ReturnType<typeof createPostsRouter>;

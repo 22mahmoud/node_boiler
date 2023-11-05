@@ -6,8 +6,9 @@ import { createMongoClient, getDb } from './lib/mongodb';
 import { createConfig } from './utils/config';
 import { terminator } from './utils/terminator';
 import { createMiddlewares } from './middlewares';
+import { ContainerRegister } from './@types';
 
-const container = createContainer({
+const container = createContainer<ContainerRegister>({
   injectionMode: InjectionMode.PROXY,
 });
 
@@ -18,6 +19,12 @@ container.register({
   db: asFunction(getDb).singleton(),
   middlewares: asFunction(createMiddlewares).singleton(),
   terminator: asFunction(terminator, { injector: (container) => ({ container }) }).singleton(),
+  app: asFunction(createApp, {
+    injector: (container) => ({
+      // @ts-ignore
+      routes: [container.cradle.postsRouter],
+    }),
+  }).singleton(),
 });
 
 container.loadModules(['./**/*Service.*', './**/*DAL.*', './**/*Router.*'], {
@@ -30,13 +37,7 @@ container.loadModules(['./**/*Service.*', './**/*DAL.*', './**/*Router.*'], {
   },
 });
 
-createApp({
-  config: container.cradle.config,
-  dbClient: container.cradle.dbClient,
-  logger: container.cradle.logger,
-  middlewares: container.cradle.middlewares,
-  routes: [container.cradle.postsRouter],
-}).then(async ({ server, listen }) => {
+container.cradle.app().then(async ({ server, listen }) => {
   await container.cradle.dbClient.connect();
 
   listen();

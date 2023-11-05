@@ -16,7 +16,7 @@ export type CreateApp = (ctx: {
     post?: RequestHandler[] | ErrorRequestHandler[];
   };
   routes: Router[];
-}) => Promise<{ server: Server; listen: () => void }>;
+}) => () => Promise<{ server: Server; listen: () => void }>;
 
 const createUseMiddlewares =
   (app: Express) =>
@@ -26,22 +26,27 @@ const createUseMiddlewares =
     });
   };
 
-export const createApp: CreateApp = ({ middlewares, routes, config, logger }) =>
-  new Promise((resolve) => {
-    const app = express();
-    const useMiddlewares = createUseMiddlewares(app);
+export const createApp: CreateApp =
+  ({ middlewares, routes, config, logger }) =>
+  () =>
+    new Promise((resolve) => {
+      const app = express();
+      const useMiddlewares = createUseMiddlewares(app);
 
-    useMiddlewares(middlewares?.pre);
-    useMiddlewares(routes);
-    useMiddlewares(middlewares?.post);
+      useMiddlewares(middlewares?.pre);
+      useMiddlewares(routes);
+      useMiddlewares(middlewares?.post);
 
-    const server = http.createServer(app);
+      const server = http.createServer(app);
 
-    const listen = () => {
-      server.listen(config.port, () => {
-        logger.info(`Server is running on port ${config.port}`);
-      });
-    };
+      const listen = () => {
+        server.listen(config.port, () => {
+          logger.info(`Server is running on port ${config.port}`);
+        });
+      };
 
-    resolve({ server, listen });
-  });
+      resolve({ server, listen });
+    });
+
+
+export type App = ReturnType<typeof createApp>

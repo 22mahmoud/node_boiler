@@ -34,3 +34,6 @@ export const createMiddlewares: CreateMiddlewares = ({ config, logger }) => {
 
   return { post, pre };
 };
+
+export type Middlewares = ReturnType<typeof createMiddlewares>;
+
