@@ -6,6 +6,7 @@ import type { Config } from '../../utils/config';
 import type { Logger } from 'pino';
 import type { Db } from 'mongodb';
 import type { PostsService } from './postsService';
+import { RESOLVER } from 'awilix';
 
 export type CreateRouter = (ctx: {
   config: Config;
@@ -27,3 +28,7 @@ export const createPostsRouter: CreateRouter = ({ postsService, logger }) => {
 
   return router;
 };
+
+// @ts-ignore
+createPostsRouter[RESOLVER] = {};
+

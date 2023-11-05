@@ -1,3 +1,4 @@
+import { RESOLVER } from 'awilix';
 import type { PostsDAL } from './postsDAL';
 
 export const createPostsService = ({ postsDAL }: { postsDAL: PostsDAL }) => {
@@ -17,5 +18,8 @@ export const createPostsService = ({ postsDAL }: { postsDAL: PostsDAL }) => {
 
   return { createPost, getPostById, getPosts };
 };
+
+// @ts-ignore
+createPostsService[RESOLVER] = {};
 
 export type PostsService = ReturnType<typeof createPostsService>;

@@ -3,6 +3,7 @@ import { randomUUID } from 'node:crypto';
 import type { Db, ObjectId } from 'mongodb';
 import type { Logger } from 'pino';
 import type { Config } from '../../utils/config';
+import { RESOLVER } from 'awilix';
 
 export const createPostsDAL = ({ db }: { logger: Logger; config: Config; db: Db }) => {
   const posts = db.collection('posts');
@@ -25,5 +26,8 @@ export const createPostsDAL = ({ db }: { logger: Logger; config: Config; db: Db 
     find,
   };
 };
+
+// @ts-ignore
+createPostsDAL[RESOLVER] = {};
 
 export type PostsDAL = ReturnType<typeof createPostsDAL>;

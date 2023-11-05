@@ -25,3 +25,7 @@ export const createMongoClient: CreateMongoClient = ({ config, logger }) => {
 
   return client;
 };
+
+export const getDb = ({ dbClient, config }: { dbClient: MongoClient; config: Config }) =>
+  dbClient.db(config.dbName);
+

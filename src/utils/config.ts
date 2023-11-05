@@ -1,4 +1,4 @@
-import { NODE_ENV } from "../@types";
+import { NODE_ENV } from '../@types';
 
 export const createConfig = ({
   env,
@@ -9,6 +9,7 @@ export const createConfig = ({
     ELASTICSEARCH_URL: string;
     ELASTICSEARCH_API_KEY: string;
     MONGO_URI: string;
+    DB_NAME: string;
   };
 }) => {
   return {
@@ -23,6 +24,7 @@ export const createConfig = ({
     elasticsearchApiKey: env.ELASTICSEARCH_API_KEY,
 
     mongoUri: env.MONGO_URI ?? 'mongodb://localhost:27017',
+    dbName: env.DB_NAME ?? 'node_boiler',
   };
 };
 
