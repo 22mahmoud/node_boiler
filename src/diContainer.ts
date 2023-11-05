@@ -27,8 +27,9 @@ container.loadModules(
         },
       },
     ],
-    'src/**/*Service.(j|t)s',
     'src/**/*DAL.(j|t)s',
+    'src/**/*Service.(j|t)s',
+    'src/**/*Controller.(j|t)s',
     'src/**/*Router.(j|t)s',
   ],
   {

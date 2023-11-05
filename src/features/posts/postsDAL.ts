@@ -20,10 +20,15 @@ export const createPostsDAL = ({ db }: { logger: Logger; config: Config; db: Db 
     return posts.find().toArray();
   };
 
+  const deleteOneById = (id: string | ObjectId) => {
+    return posts.deleteOne({ $expr: { $eq: ['$_id', id.toString()] } });
+  };
+
   return {
     findOneById,
     insertOne,
     find,
+    deleteOneById,
   };
 };
 

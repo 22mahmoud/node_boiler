@@ -1,7 +1,13 @@
+import { RESOLVER } from 'awilix';
+
 import type { Response, Request } from 'express';
 import type { PostsService } from './postsService';
 
-export const createPostsController = ({ postsService }: { postsService: PostsService }) => {
+type Deps = {
+  postsService: PostsService;
+};
+
+export const createPostsController = ({ postsService }: Deps) => {
   const list = async (_req: Request, res: Response) => {
     const posts = await postsService.getPosts();
 
@@ -24,5 +30,20 @@ export const createPostsController = ({ postsService }: { postsService: PostsSer
     res.json(post);
   };
 
-  return { list, get, create };
+  const _delete = async (req: Request, res: Response) => {
+    const id = req.params.id;
+
+    const post = await postsService.deletePostById(id);
+
+    res.json(post);
+  };
+
+  return { list, get, create, delete: _delete };
 };
+
+// @ts-ignore
+createPostsController[RESOLVER] = {
+  name: 'postsController',
+};
+
+export type PostsController = ReturnType<typeof createPostsController>;

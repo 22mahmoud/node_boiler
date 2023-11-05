@@ -16,7 +16,11 @@ export const createPostsService = ({ postsDAL }: { postsDAL: PostsDAL }) => {
     return await postsDAL.findOneById(insertedId);
   };
 
-  return { createPost, getPostById, getPosts };
+  const deletePostById = async (id: string) => {
+    return await postsDAL.deleteOneById(id);
+  };
+
+  return { createPost, getPostById, getPosts, deletePostById };
 };
 
 // @ts-ignore

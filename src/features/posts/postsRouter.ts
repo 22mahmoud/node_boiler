@@ -1,30 +1,24 @@
 import { RESOLVER } from 'awilix';
 import { Router } from 'express';
 
-import { createPostsController } from './postsController';
-
-import type { Config } from '../../utils/config';
 import type { Logger } from 'pino';
-import type { Db } from 'mongodb';
-import type { PostsService } from './postsService';
+import type { PostsController } from './postsController';
 
 export type CreateRouter = (ctx: {
-  config: Config;
   logger: Logger;
-  db: Db;
-  postsService: PostsService;
+  postsController: PostsController;
 }) => Router;
 
-export const createPostsRouter: CreateRouter = ({ postsService, logger }) => {
+export const createPostsRouter: CreateRouter = ({ logger, postsController }) => {
   const router = Router();
-
-  const postsController = createPostsController({ postsService });
 
   router
     .get('/posts', postsController.list)
     .post('/posts', postsController.create)
-    .get('/posts/:id', postsController.get),
-    logger.info('`/posts` routes created');
+    .get('/posts/:id', postsController.get)
+    .delete('/posts/:id', postsController.delete);
+
+  logger.info('`/posts` routes created');
 
   return router;
 };
