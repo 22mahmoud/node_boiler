@@ -20,6 +20,8 @@ export const createPostsService = ({ postsDAL }: { postsDAL: PostsDAL }) => {
 };
 
 // @ts-ignore
-createPostsService[RESOLVER] = {};
+createPostsService[RESOLVER] = {
+  name: 'postsService',
+};
 
 export type PostsService = ReturnType<typeof createPostsService>;

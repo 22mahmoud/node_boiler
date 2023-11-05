@@ -28,6 +28,8 @@ export const createPostsDAL = ({ db }: { logger: Logger; config: Config; db: Db 
 };
 
 // @ts-ignore
-createPostsDAL[RESOLVER] = {};
+createPostsDAL[RESOLVER] = {
+  name: 'postsDAL',
+};
 
 export type PostsDAL = ReturnType<typeof createPostsDAL>;

@@ -1,3 +1,4 @@
+import { RESOLVER } from 'awilix';
 import { Router } from 'express';
 
 import { createPostsController } from './postsController';
@@ -6,7 +7,6 @@ import type { Config } from '../../utils/config';
 import type { Logger } from 'pino';
 import type { Db } from 'mongodb';
 import type { PostsService } from './postsService';
-import { RESOLVER } from 'awilix';
 
 export type CreateRouter = (ctx: {
   config: Config;
@@ -20,17 +20,18 @@ export const createPostsRouter: CreateRouter = ({ postsService, logger }) => {
 
   const postsController = createPostsController({ postsService });
 
-  router.get('/posts', postsController.list);
-  router.post('/posts', postsController.create);
-  router.get('/posts/:id', postsController.get);
-
-  logger.info('`/posts` routes created');
+  router
+    .get('/posts', postsController.list)
+    .post('/posts', postsController.create)
+    .get('/posts/:id', postsController.get),
+    logger.info('`/posts` routes created');
 
   return router;
 };
 
 // @ts-ignore
-createPostsRouter[RESOLVER] = {};
-
+createPostsRouter[RESOLVER] = {
+  name: 'postsRouter',
+};
 
 export type PostsRouter = ReturnType<typeof createPostsRouter>;

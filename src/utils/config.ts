@@ -1,3 +1,4 @@
+import { RESOLVER } from 'awilix';
 import { NODE_ENV } from '../@types';
 
 export const createConfig = ({
@@ -26,6 +27,11 @@ export const createConfig = ({
     mongoUri: env.MONGO_URI ?? 'mongodb://localhost:27017',
     dbName: env.DB_NAME ?? 'node_boiler',
   };
+};
+
+// @ts-ignore
+createConfig[RESOLVER] = {
+  name: 'config',
 };
 
 export type Config = ReturnType<typeof createConfig>;
