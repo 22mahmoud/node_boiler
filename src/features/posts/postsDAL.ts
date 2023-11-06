@@ -5,7 +5,7 @@ import type { Logger } from 'pino';
 import type { Config } from '../../utils/config';
 import { RESOLVER } from 'awilix';
 
-export const createPostsDAL = ({ db }: { logger: Logger; config: Config; db: Db }) => {
+export const createPostsDAL = ({ db, logger }: { logger: Logger; config: Config; db: Db }) => {
   const posts = db.collection('posts');
 
   const findOneById = (id: string | ObjectId) => {
@@ -17,6 +17,8 @@ export const createPostsDAL = ({ db }: { logger: Logger; config: Config; db: Db 
   };
 
   const find = () => {
+    logger.info('TEST');
+
     return posts.find().toArray();
   };
 

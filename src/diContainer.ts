@@ -11,7 +11,7 @@ container.loadModules(
     ['src/utils/config.(j|t)s', { injector: () => ({ env: process.env }) }],
     'src/lib/pino.(j|t)s',
     'src/lib/mongodb.(j|t)s',
-    'src/middlewares/index.(j|t)s',
+    ['src/middlewares/index.(j|t)s', { injector: (container) => ({ container }) }],
     ['src/utils/terminator.(j|t)s', { injector: (container) => ({ container }) }],
     [
       'src/app.(j|t)s',
@@ -27,10 +27,9 @@ container.loadModules(
         },
       },
     ],
-    'src/**/*DAL.(j|t)s',
-    'src/**/*Service.(j|t)s',
-    'src/**/*Controller.(j|t)s',
-    'src/**/*Router.(j|t)s',
+    ['src/**/*DAL.(j|t)s', { lifetime: 'SCOPED' }],
+    ['src/**/*Service.(j|t)s', { lifetime: 'SCOPED' }],
+    ['src/**/*Router.(j|t)s'],
   ],
   {
     resolverOptions: {

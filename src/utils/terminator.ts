@@ -47,7 +47,7 @@ export const terminator: (deps: Deps) => Terminator =
       container
         .dispose()
         .then(() => {
-          logger.info('container diposed');
+          logger.info('All dependencies disposed');
         })
         .catch((error) => {
           logger.error('Error while container.dispose()', error);

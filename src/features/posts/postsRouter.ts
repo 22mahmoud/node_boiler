@@ -2,21 +2,21 @@ import { RESOLVER } from 'awilix';
 import { Router } from 'express';
 
 import type { Logger } from 'pino';
-import type { PostsController } from './postsController';
+import { createPostsController } from './postsController';
+import { makeInvoker } from '../../utils/makeInvoker';
 
-export type CreateRouter = (ctx: {
-  logger: Logger;
-  postsController: PostsController;
-}) => Router;
+export type CreateRouter = (ctx: { logger: Logger }) => Router;
 
-export const createPostsRouter: CreateRouter = ({ logger, postsController }) => {
+export const createPostsRouter: CreateRouter = ({ logger }) => {
   const router = Router();
 
+  const api = makeInvoker(createPostsController);
+
   router
-    .get('/posts', postsController.list)
-    .post('/posts', postsController.create)
-    .get('/posts/:id', postsController.get)
-    .delete('/posts/:id', postsController.delete);
+    .get('/posts', api('list'))
+    .post('/posts', api('create'))
+    .get('/posts/:id', api('get'))
+    .delete('/posts/:id', api('delete'));
 
   logger.info('`/posts` routes created');
 

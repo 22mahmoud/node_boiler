@@ -3,12 +3,17 @@
   "display": "Node 20",
   "_version": "20.1.0",
 
+  "ts-node": {
+    "transpileOnly": true
+  },
+
   "compilerOptions": {
     "rootDir": ".",
     "outDir": "dist",
     "lib": ["es2023"],
     "module": "node16",
     "target": "es2022",
+    "typeRoots": ["src/@types"],
 
     "strict": true,
     "esModuleInterop": true,

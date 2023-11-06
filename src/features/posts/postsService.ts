@@ -1,7 +1,8 @@
 import { RESOLVER } from 'awilix';
 import type { PostsDAL } from './postsDAL';
+import { Logger } from 'pino';
 
-export const createPostsService = ({ postsDAL }: { postsDAL: PostsDAL }) => {
+export const createPostsService = ({ postsDAL }: { logger: Logger; postsDAL: PostsDAL }) => {
   const getPostById = async (id: string) => {
     return await postsDAL.findOneById(id);
   };
