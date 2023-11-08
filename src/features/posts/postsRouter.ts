@@ -4,17 +4,19 @@ import { Router } from 'express';
 import type { Logger } from 'pino';
 import { createPostsController } from './postsController';
 import { makeInvoker } from '../../utils/makeInvoker';
+import { zodMiddleware } from '../../middlewares/zodMiddleware';
+import { createPostSchema } from './postsSchema';
 
-export type CreateRouter = (ctx: { logger: Logger }) => Router;
+export type CreatePostsRouter = (ctx: { logger: Logger }) => Router;
 
-export const createPostsRouter: CreateRouter = ({ logger }) => {
+export const createPostsRouter: CreatePostsRouter = ({ logger }) => {
   const router = Router();
 
   const api = makeInvoker(createPostsController);
 
   router
     .get('/posts', api('list'))
-    .post('/posts', api('create'))
+    .post('/posts', zodMiddleware(createPostSchema), api('create'))
     .get('/posts/:id', api('get'))
     .delete('/posts/:id', api('delete'));
 

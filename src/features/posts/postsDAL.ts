@@ -18,7 +18,6 @@ export const createPostsDAL = ({ db, logger }: { logger: Logger; config: Config;
 
   const find = () => {
     logger.info('TEST');
-
     return posts.find().toArray();
   };
 

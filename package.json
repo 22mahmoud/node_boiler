@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "NODE_ENV=development nodemon --exec 'node -r ts-node/register --env-file=.env' src/index.ts",
+    "dev:inspect": "NODE_ENV=development nodemon --exec 'node --inspect -r ts-node/register --env-file=.env' src/index.ts",
     "build": "NODE_ENV=production tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
     "preview": "node --env-file=.env dist/src"
@@ -23,7 +24,8 @@
     "pino": "^8.16.1",
     "pino-elasticsearch": "^7.0.0",
     "pino-http": "^8.5.1",
-    "pino-pretty": "^10.2.3"
+    "pino-pretty": "^10.2.3",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/express": "^4.17.20",
