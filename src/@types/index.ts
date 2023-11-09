@@ -9,6 +9,7 @@ import type { PostsDAL } from '../features/posts/postsDAL';
 import type { PostsService } from '../features/posts/postsService';
 import type { PostsRouter } from '../features/posts/postsRouter';
 import type { PostsController } from '../features/posts/postsController';
+import type { EnvSchemaType } from '../utils/envSchema';
 
 export type NODE_ENV = 'production' | 'development' | 'test';
 
@@ -17,6 +18,7 @@ export interface ContainerRegister {
   logger: Logger;
   dbClient: MongoClient;
   db: Db;
+  env: EnvSchemaType;
   middlewares: Middlewares;
   terminator: Terminator;
   app: App;

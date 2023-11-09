@@ -10,15 +10,21 @@ import { createPostsDAL } from './features/posts/postsDAL';
 import { createPostsRouter } from './features/posts/postsRouter';
 import { createPostsService } from './features/posts/postsService';
 import { terminator } from './utils/terminator';
+import { createEnvSchema } from './utils/envSchema';
 
 export const container = createContainer<ContainerRegister>({
   injectionMode: InjectionMode.PROXY,
 });
 
 container.register({
-  config: asFunction(createConfig)
+  env: asFunction(createEnvSchema)
     .singleton()
     .inject(() => ({ env: process.env })),
+
+  config: asFunction(createConfig)
+    .singleton()
+    .inject((container) => ({ env: (container.cradle as any).env })),
+
   logger: asFunction(createLogger).singleton(),
 
   dbClient: asFunction(createMongoClient).singleton(),

@@ -1,17 +1,6 @@
-import { NODE_ENV } from '../@types';
+import { EnvSchemaType } from './envSchema';
 
-export const createConfig = ({
-  env,
-}: {
-  env: {
-    PORT: number;
-    NODE_ENV: NODE_ENV;
-    ELASTICSEARCH_URL: string;
-    ELASTICSEARCH_API_KEY: string;
-    MONGO_URI: string;
-    DB_NAME: string;
-  };
-}) => {
+export const createConfig = ({ env }: { env: EnvSchemaType }) => {
   return {
     port: env.PORT ?? 5000,
 
@@ -23,8 +12,8 @@ export const createConfig = ({
     elasticsearchUrl: env.ELASTICSEARCH_URL,
     elasticsearchApiKey: env.ELASTICSEARCH_API_KEY,
 
-    mongoUri: env.MONGO_URI ?? 'mongodb://localhost:27017',
-    dbName: env.DB_NAME ?? 'node_boiler',
+    mongoUri: env.MONGO_URI,
+    dbName: env.DB_NAME,
   };
 };
 
