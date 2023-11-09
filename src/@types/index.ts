@@ -26,6 +26,7 @@ export interface ContainerRegister {
   postsDAL: PostsDAL;
   postsRouter: PostsRouter;
   postsService: PostsService;
+  postsController: PostsController;
 }
 
 export {

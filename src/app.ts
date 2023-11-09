@@ -6,6 +6,8 @@ import type { Server } from 'node:http';
 import type { Config } from './utils/config';
 import type { Logger } from 'pino';
 import type { MongoClient } from 'mongodb';
+import { Route } from './@types/routes';
+import { zodMiddleware } from './middlewares/zodMiddleware';
 
 export type CreateApp = (ctx: {
   config: Config;
@@ -15,7 +17,7 @@ export type CreateApp = (ctx: {
     pre?: RequestHandler[] | ErrorRequestHandler[];
     post?: RequestHandler[] | ErrorRequestHandler[];
   };
-  routes: Router[];
+  routes: Route[];
 }) => () => Promise<{ server: Server; listen: () => void }>;
 
 const createUseMiddlewares =
@@ -27,12 +29,19 @@ const createUseMiddlewares =
   };
 
 const createUseApiRoutes =
-  (app: Express) =>
-  (routes: RequestHandler[] = []) => {
+  ({ app, logger }: { app: Express; logger: Logger }) =>
+  (routes: Route[] = []) => {
     const router = Router();
 
-    routes.forEach((handler) => {
-      router.use('/api/v1', handler);
+    routes.forEach(({ handlers, method, path, schema }) => {
+      if (!(method in router)) {
+        return;
+      }
+
+      // eslint-disable-next-line security/detect-object-injection
+      router.use('/api/v1', router[method](path, zodMiddleware(schema ?? {}), ...handlers));
+
+      logger.info(':%s "%s" route initialized!', method.toUpperCase(), path);
     });
 
     app.use(router);
@@ -44,7 +53,7 @@ export const createApp: CreateApp =
     new Promise((resolve) => {
       const app = express();
       const useMiddlewares = createUseMiddlewares(app);
-      const useApiRoutes = createUseApiRoutes(app);
+      const useApiRoutes = createUseApiRoutes({ app, logger });
 
       useMiddlewares(middlewares?.pre);
       useApiRoutes(routes);

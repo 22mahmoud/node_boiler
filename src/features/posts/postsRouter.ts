@@ -1,27 +1,32 @@
-import { Router } from 'express';
+import { createPostBodySchema } from './postsSchema';
 
-import type { Logger } from 'pino';
-import { createPostsController } from './postsController';
-import { makeInvoker } from '../../utils/makeInvoker';
-import { zodMiddleware } from '../../middlewares/zodMiddleware';
-import { createPostSchema } from './postsSchema';
+import type { Route } from '../../@types/routes';
+import type { ContainerRegister } from '../../@types';
 
-export type CreatePostsRouter = (ctx: { logger: Logger }) => Router;
-
-export const createPostsRouter: CreatePostsRouter = ({ logger }) => {
-  const router = Router();
-
-  const api = makeInvoker(createPostsController);
-
-  router
-    .get('/posts', api('list'))
-    .post('/posts', zodMiddleware(createPostSchema), api('create'))
-    .get('/posts/:id', api('get'))
-    .delete('/posts/:id', api('delete'));
-
-  logger.info('`/posts` routes created');
-
-  return router;
-};
+export const createPostsRouter = ({ postsController }: ContainerRegister): Route[] => [
+  {
+    method: 'get',
+    path: '/posts',
+    handlers: [postsController.list],
+  },
+  {
+    method: 'get',
+    path: '/posts/:id',
+    handlers: [postsController.get],
+  },
+  {
+    method: 'post',
+    path: '/posts',
+    handlers: [postsController.create],
+    schema: {
+      body: createPostBodySchema,
+    },
+  },
+  {
+    method: 'delete',
+    path: '/posts/:id',
+    handlers: [postsController.delete],
+  },
+];
 
 export type PostsRouter = ReturnType<typeof createPostsRouter>;

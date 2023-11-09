@@ -6,11 +6,9 @@ import { createConfig } from './utils/config';
 import { createLogger } from './lib/pino';
 import { createMongoClient, getDb } from './lib/mongodb';
 import { createMiddlewares } from './middlewares';
-import { createPostsDAL } from './features/posts/postsDAL';
-import { createPostsRouter } from './features/posts/postsRouter';
-import { createPostsService } from './features/posts/postsService';
 import { terminator } from './utils/terminator';
 import { createEnvSchema } from './utils/envSchema';
+import { resolvePostsDiConfig } from './features/posts/postsDiConfig';
 
 export const container = createContainer<ContainerRegister>({
   injectionMode: InjectionMode.PROXY,
@@ -38,14 +36,7 @@ container.register({
     .singleton()
     .inject((container) => ({ container })),
 
-  // routers
-  postsRouter: asFunction(createPostsRouter).singleton(),
-
-  // services
-  postsService: asFunction(createPostsService).scoped(),
-
-  // DALs
-  postsDAL: asFunction(createPostsDAL).scoped(),
+  ...resolvePostsDiConfig(),
 
   app: asFunction(createApp)
     .singleton()
@@ -55,7 +46,8 @@ container.register({
       return {
         routes: Object.keys(c)
           .filter((key) => key.endsWith('Router'))
-          .map((key) => c[key as keyof typeof c]),
+          .map((key) => c[key as keyof typeof c])
+          .flat(1),
       };
     }),
 });
