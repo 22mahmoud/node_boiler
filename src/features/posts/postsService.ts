@@ -1,4 +1,3 @@
-import { RESOLVER } from 'awilix';
 import type { PostsDAL } from './postsDAL';
 import { Logger } from 'pino';
 
@@ -22,11 +21,6 @@ export const createPostsService = ({ postsDAL }: { logger: Logger; postsDAL: Pos
   };
 
   return { createPost, getPostById, getPosts, deletePostById };
-};
-
-// @ts-ignore
-createPostsService[RESOLVER] = {
-  name: 'postsService',
 };
 
 export type PostsService = ReturnType<typeof createPostsService>;

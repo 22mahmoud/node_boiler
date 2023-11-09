@@ -2,7 +2,6 @@ import { MongoClient } from 'mongodb';
 
 import type { Logger } from 'pino';
 import type { Config } from '../utils/config';
-import { RESOLVER } from 'awilix';
 
 export type CreateMongoClient = (ctx: { config: Config; logger: Logger }) => MongoClient;
 
@@ -29,9 +28,3 @@ export const createMongoClient: CreateMongoClient = ({ config, logger }) => {
 
 export const getDb = ({ dbClient, config }: { dbClient: MongoClient; config: Config }) =>
   dbClient.db(config.dbName);
-
-// @ts-ignore
-getDb[RESOLVER] = { name: 'db' };
-
-// @ts-ignore
-createMongoClient[RESOLVER] = { name: 'dbClient' };

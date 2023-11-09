@@ -1,5 +1,3 @@
-import { RESOLVER } from 'awilix';
-
 import type { Response, Request } from 'express';
 import type { PostsService } from './postsService';
 
@@ -38,12 +36,7 @@ export const createPostsController = ({ postsService }: Deps) => {
     res.json(post);
   };
 
-  return { list, get, create, delete: _delete };
-};
-
-// @ts-ignore
-createPostsController[RESOLVER] = {
-  name: 'postsController',
+  return { list, get, create, delete: _delete } as const;
 };
 
 export type PostsController = ReturnType<typeof createPostsController>;

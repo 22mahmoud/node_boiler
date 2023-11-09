@@ -1,23 +1,25 @@
-import { randomUUID } from 'node:crypto';
+import { ObjectId } from 'mongodb';
 
-import type { Db, ObjectId } from 'mongodb';
+import type { Db } from 'mongodb';
 import type { Logger } from 'pino';
 import type { Config } from '../../utils/config';
-import { RESOLVER } from 'awilix';
 
-export const createPostsDAL = ({ db, logger }: { logger: Logger; config: Config; db: Db }) => {
+type Deps = { logger: Logger; config: Config; db: Db };
+
+export const createPostsDAL = ({ db }: Deps) => {
   const posts = db.collection('posts');
 
   const findOneById = (id: string | ObjectId) => {
-    return posts.findOne({ $expr: { $eq: ['$_id', id.toString()] } });
+    return posts.findOne({
+      $expr: { $eq: ['$_id', id instanceof ObjectId ? id : new ObjectId(id)] },
+    });
   };
 
   const insertOne = (doc: { title: string }) => {
-    return posts.insertOne({ _id: `PST-${randomUUID()}` as any, ...doc });
+    return posts.insertOne({ _id: new ObjectId(), ...doc });
   };
 
   const find = () => {
-    logger.info('TEST');
     return posts.find().toArray();
   };
 
@@ -31,11 +33,6 @@ export const createPostsDAL = ({ db, logger }: { logger: Logger; config: Config;
     find,
     deleteOneById,
   };
-};
-
-// @ts-ignore
-createPostsDAL[RESOLVER] = {
-  name: 'postsDAL',
 };
 
 export type PostsDAL = ReturnType<typeof createPostsDAL>;

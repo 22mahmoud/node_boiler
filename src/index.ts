@@ -1,4 +1,4 @@
-import { container } from './diContainer';
+import { container } from './ioc';
 
 const { app, dbClient, terminator } = container.cradle;
 

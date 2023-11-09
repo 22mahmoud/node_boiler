@@ -1,4 +1,3 @@
-import { RESOLVER } from 'awilix';
 import pino from 'pino';
 import { ecsFormat } from '@elastic/ecs-pino-format';
 
@@ -78,6 +77,3 @@ export const createLogger = ({ config }: { config: Config }) => {
 
   return logger;
 };
-
-// @ts-ignore
-createLogger[RESOLVER] = { name: 'logger' };

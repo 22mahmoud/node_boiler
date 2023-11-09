@@ -1,4 +1,3 @@
-import { RESOLVER } from 'awilix';
 import express, { Router } from 'express';
 import http from 'node:http';
 
@@ -63,6 +62,3 @@ export const createApp: CreateApp =
     });
 
 export type App = ReturnType<typeof createApp>;
-
-// @ts-ignore
-createApp[RESOLVER] = { name: 'app' };

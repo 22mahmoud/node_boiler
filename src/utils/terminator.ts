@@ -1,5 +1,3 @@
-import { RESOLVER } from 'awilix';
-
 import type { MongoClient } from 'mongodb';
 import type { Logger } from 'pino';
 import type { IncomingMessage, Server, ServerResponse } from 'http';
@@ -70,6 +68,3 @@ export const terminator: (deps: Deps) => Terminator =
       }
     };
   };
-
-// @ts-ignore
-terminator[RESOLVER] = { name: 'terminator' };

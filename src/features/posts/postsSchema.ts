@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export const createPostSchema = z.object({
   body: z.object({
-    title: z.string().trim()
+    title: z.string().trim(),
   }),
 });
 

@@ -1,4 +1,4 @@
-import { type AwilixContainer, RESOLVER } from 'awilix';
+import { type AwilixContainer } from 'awilix';
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -46,6 +46,3 @@ export const createMiddlewares: CreateMiddlewares = ({ container, config, logger
 };
 
 export type Middlewares = ReturnType<typeof createMiddlewares>;
-
-// @ts-ignore
-createMiddlewares[RESOLVER] = { name: 'middlewares' };

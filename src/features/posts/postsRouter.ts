@@ -1,4 +1,3 @@
-import { RESOLVER } from 'awilix';
 import { Router } from 'express';
 
 import type { Logger } from 'pino';
@@ -23,11 +22,6 @@ export const createPostsRouter: CreatePostsRouter = ({ logger }) => {
   logger.info('`/posts` routes created');
 
   return router;
-};
-
-// @ts-ignore
-createPostsRouter[RESOLVER] = {
-  name: 'postsRouter',
 };
 
 export type PostsRouter = ReturnType<typeof createPostsRouter>;
