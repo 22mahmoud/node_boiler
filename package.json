@@ -2,10 +2,9 @@
   "name": "node_boiler",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
-    "dev": "NODE_ENV=development nodemon --exec 'node -r ts-node/register --env-file=.env' src/index.ts",
-    "dev:inspect": "NODE_ENV=development nodemon --exec 'node --inspect -r ts-node/register --env-file=.env' src/index.ts",
+    "dev": "nodemon src/index.ts",
+    "dev:inspect": "nodemon --inspect src/index.ts",
     "build": "NODE_ENV=production tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint . --ext .ts,.js",
