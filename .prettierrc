@@ -5,5 +5,22 @@
   "semi": true,
   "trailingComma": "all",
   "arrowParens": "always",
-  "endOfLine": "lf"
+  "endOfLine": "lf",
+  "importOrder": [
+    "<BUILT_IN_MODULES>",
+    "^express$",
+    "<THIRD_PARTY_MODULES>",
+    "",
+    "^@\\/.*",
+    "^[.]",
+    "",
+    "",
+    "<TYPES>",
+    "<TYPES><BUILT_IN_MODULES>",
+    "<TYPES>^express$",
+    "<TYPES><THIRD_PARTY_MODULES>",
+    "<TYPES>^@/*",
+    "<TYPES>^[.]"
+  ],
+  "plugins": ["@ianvs/prettier-plugin-sort-imports"]
 }

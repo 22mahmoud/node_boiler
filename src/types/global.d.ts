@@ -1,6 +1,5 @@
 import type { AwilixContainer } from 'awilix';
-import type { ContainerRegister } from '../@types';
-import type { EnvSchemaType } from '../utils/envSchema';
+import type { ContainerRegister, EnvSchemaType } from '@/types';
 
 declare module 'http' {
   interface IncomingMessage {

@@ -1,16 +1,15 @@
-import { type AwilixContainer } from 'awilix';
 import express from 'express';
+import { type AwilixContainer } from 'awilix';
 import cors from 'cors';
 import helmet from 'helmet';
 import pinoHttp from 'pino-http';
 
-import { registerLoggerMiddleware, scopedContainerMiddleware } from './scopedContainerMiddleware';
 import { errorMiddleware } from './errorMiddleware';
+import { registerLoggerMiddleware, scopedContainerMiddleware } from './scopedContainerMiddleware';
 
-import type { ErrorRequestHandler, RequestHandler } from 'express';
-import type { Config } from '../utils/config';
 import type { Logger } from 'pino';
-import type { ContainerRegister } from '../@types';
+import type { ErrorRequestHandler, RequestHandler } from 'express';
+import type { Config, ContainerRegister } from '@/types';
 
 export type CreateMiddlewares = (ctx: {
   config: Config;

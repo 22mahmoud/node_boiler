@@ -1,15 +1,10 @@
-import type { Logger } from 'pino';
-import type { Config } from '../utils/config';
 import type { Db, MongoClient } from 'mongodb';
-import type { Terminator } from '../utils/terminator';
-import type { Middlewares } from '../middlewares';
-import type { App } from '../app';
-
-import type { PostsDAL } from '../features/posts/postsDAL';
-import type { PostsService } from '../features/posts/postsService';
-import type { PostsRouter } from '../features/posts/postsRouter';
-import type { PostsController } from '../features/posts/postsController';
-import type { EnvSchemaType } from '../utils/envSchema';
+import type { Logger } from 'pino';
+import type { App } from '@/app';
+import type { PostsController, PostsDAL, PostsRouter, PostsService } from '@/features';
+import type { Middlewares } from '@/middlewares';
+import type { Config, EnvSchemaType, Terminator } from '@/utils';
+import type { Route } from './routes';
 
 export type NODE_ENV = 'production' | 'development' | 'test';
 
@@ -41,4 +36,6 @@ export {
   PostsRouter,
   PostsService,
   PostsController,
+  Route,
+  EnvSchemaType,
 };

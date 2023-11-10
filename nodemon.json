@@ -3,7 +3,6 @@
   "execMap": {
     "ts": "node -r ts-node/register --env-file=.env"
   },
-  "events": {
-  },
+  "events": {},
   "watch": ["src/", "package.json", ".env", "tsconfig.json"]
 }

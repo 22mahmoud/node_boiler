@@ -1,5 +1,5 @@
 import type { ErrorRequestHandler } from 'express';
-import type { Config } from '../utils/config';
+import type { Config } from '@/types';
 
 export const errorMiddleware: (ctx: { config: Config }) => ErrorRequestHandler =
   ({ config }) =>

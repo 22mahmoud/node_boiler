@@ -1,14 +1,13 @@
-import { createContainer, asFunction, InjectionMode, AwilixContainer } from 'awilix';
+import { asFunction, createContainer, InjectionMode } from 'awilix';
 
-import { ContainerRegister } from './@types';
-import { createApp } from './app';
-import { createConfig } from './utils/config';
-import { createLogger } from './lib/pino';
-import { createMongoClient, getDb } from './lib/mongodb';
-import { createMiddlewares } from './middlewares';
-import { terminator } from './utils/terminator';
-import { createEnvSchema } from './utils/envSchema';
-import { resolvePostsDiConfig } from './features/posts/postsDiConfig';
+import { createApp } from '@/app';
+import { resolvePostsDiConfig } from '@/features';
+import { createLogger, createMongoClient, getDb } from '@/lib';
+import { createMiddlewares } from '@/middlewares';
+import { createConfig, createEnvSchema, terminator } from '@/utils';
+
+import type { AwilixContainer } from 'awilix';
+import type { ContainerRegister } from '@/types';
 
 export const container = createContainer<ContainerRegister>({
   injectionMode: InjectionMode.PROXY,

@@ -1,16 +1,17 @@
 import assert from 'node:assert';
+import { NextFunction, Request, Response } from 'express';
 import {
+  asFunction,
   AwilixContainer,
   ClassOrFunctionReturning,
   FunctionReturning,
   Resolver,
   ResolverOptions,
-  asFunction,
 } from 'awilix';
-import { Request, Response, NextFunction } from 'express';
 
 import { asyncErrorWrapper } from './asyncErrorWrapper';
-import { ContainerRegister } from '../@types';
+
+import type { ContainerRegister } from '@/types';
 
 export function makeInvoker<T>(fn: FunctionReturning<T>, opts?: ResolverOptions<T>) {
   const resolver = asFunction(fn, opts);

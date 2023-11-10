@@ -1,4 +1,6 @@
-import { asValue, type AwilixContainer } from 'awilix';
+import { asValue } from 'awilix';
+
+import type { AwilixContainer } from 'awilix';
 import type { RequestHandler } from 'express';
 
 export const scopedContainerMiddleware: ({

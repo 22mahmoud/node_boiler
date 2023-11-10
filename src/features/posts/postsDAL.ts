@@ -2,7 +2,7 @@ import { ObjectId } from 'mongodb';
 
 import type { Db } from 'mongodb';
 import type { Logger } from 'pino';
-import type { Config } from '../../utils/config';
+import type { Config } from '@/types';
 
 type Deps = { logger: Logger; config: Config; db: Db };
 

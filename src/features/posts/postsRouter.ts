@@ -1,7 +1,6 @@
 import { createPostBodySchema } from './postsSchema';
 
-import type { Route } from '../../@types/routes';
-import type { ContainerRegister } from '../../@types';
+import type { ContainerRegister, Route } from '@/types';
 
 export const createPostsRouter = ({ postsController }: ContainerRegister): Route[] => [
   {

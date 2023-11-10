@@ -1,4 +1,4 @@
-import type { Response, Request } from 'express';
+import type { Request, Response } from 'express';
 import type { PostsService } from './postsService';
 
 type Deps = {

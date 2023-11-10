@@ -1,7 +1,7 @@
-import type { RequestHandler } from 'express';
 import type { RouteParameters } from 'express-serve-static-core';
 import type { ParsedQs } from 'qs';
 import type { ZodSchema } from 'zod';
+import type { RequestHandler } from 'express';
 
 export type Route<
   Path extends string = any,

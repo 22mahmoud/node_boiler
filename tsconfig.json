@@ -4,7 +4,8 @@
   "_version": "20.1.0",
 
   "ts-node": {
-    "transpileOnly": true
+    "transpileOnly": true,
+    "require": ["tsconfig-paths/register"]
   },
 
   "compilerOptions": {
@@ -13,7 +14,12 @@
     "lib": ["es2023"],
     "module": "node16",
     "target": "es2022",
-    "typeRoots": ["src/@types"],
+    "typeRoots": ["src/types"],
+
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
 
     "strict": true,
     "esModuleInterop": true,

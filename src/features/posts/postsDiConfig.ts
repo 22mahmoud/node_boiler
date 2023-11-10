@@ -1,11 +1,11 @@
-import { NameAndRegistrationPair, asFunction } from 'awilix';
+import { asFunction, NameAndRegistrationPair } from 'awilix';
 
+import { createPostsController } from './postsController';
 import { createPostsDAL } from './postsDAL';
 import { createPostsRouter } from './postsRouter';
 import { createPostsService } from './postsService';
-import { createPostsController } from './postsController';
 
-import type { ContainerRegister } from '../../@types';
+import type { ContainerRegister } from '@/types';
 
 export const resolvePostsDiConfig: () => NameAndRegistrationPair<ContainerRegister> = () => ({
   postsRouter: asFunction(createPostsRouter).singleton(),

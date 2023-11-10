@@ -1,8 +1,8 @@
-import pino from 'pino';
 import { ecsFormat } from '@elastic/ecs-pino-format';
+import pino from 'pino';
 
-import type { Config } from '../utils/config';
 import type { TransportTargetOptions } from 'pino';
+import type { Config } from '../utils/config';
 
 export const createLogger = ({ config }: { config: Config }) => {
   const level = 'trace';
