@@ -19,6 +19,12 @@ export const createLogger = ({ config }: { config: Config }) => {
     options: { destination: './.logs/out.log' },
   };
 
+  const logFileErrorTransport: TransportTargetOptions = {
+    level: 'error',
+    target: 'pino/file',
+    options: { destination: './.logs/out-error.log' },
+  };
+
   const prettyTransport: TransportTargetOptions = {
     level,
     target: 'pino-pretty',
@@ -69,6 +75,7 @@ export const createLogger = ({ config }: { config: Config }) => {
     pino.transport({
       targets: [
         logFileTransport,
+        logFileErrorTransport,
         ...(config.elasticsearchUrl ? [elasticsearchTransport] : []),
         ...(config.isDev ? [prettyTransport] : []),
       ],

@@ -2,7 +2,7 @@ import { asFunction, createContainer, InjectionMode } from 'awilix';
 
 import { createApp } from '@/app';
 import { resolvePostsDiConfig } from '@/features';
-import { createLogger, createMongoClient, getDb } from '@/lib';
+import { createApplicationError, createLogger, createMongoClient, getDb } from '@/lib';
 import { createMiddlewares } from '@/middlewares';
 import { createConfig, createEnvSchema, terminator } from '@/utils';
 
@@ -26,6 +26,8 @@ container.register({
 
   dbClient: asFunction(createMongoClient).singleton(),
   db: asFunction(getDb).singleton(),
+
+  error: asFunction(createApplicationError).singleton(),
 
   middlewares: asFunction(createMiddlewares)
     .singleton()

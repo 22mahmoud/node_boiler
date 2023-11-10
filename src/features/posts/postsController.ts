@@ -1,3 +1,5 @@
+import { asyncErrorWrapper } from '@/utils';
+
 import type { Request, Response } from 'express';
 import type { PostsService } from './postsService';
 
@@ -36,7 +38,12 @@ export const createPostsController = ({ postsService }: Deps) => {
     res.json(post);
   };
 
-  return { list, get, create, delete: _delete } as const;
+  return {
+    list: asyncErrorWrapper(list),
+    get: asyncErrorWrapper(get),
+    create: asyncErrorWrapper(create),
+    delete: asyncErrorWrapper(_delete),
+  } as const;
 };
 
 export type PostsController = ReturnType<typeof createPostsController>;
