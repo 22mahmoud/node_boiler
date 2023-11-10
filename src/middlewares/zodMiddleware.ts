@@ -36,7 +36,7 @@ export const zodMiddleware =
     }
 
     if (errors.length > 0) {
-      return next(errors);
+      return next({ status: 402, errors });
     }
 
     next();

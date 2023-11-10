@@ -6,7 +6,7 @@ export const errorMiddleware: (ctx: { config: Config }) => ErrorRequestHandler =
   (error, _req, res, next) => {
     if (!error) return next();
 
-    const status = error.statusCode || 500;
+    const status = error.statusCode || error.status || 500;
     const message = error.message || 'something went wrong';
 
     res.status(status).json({

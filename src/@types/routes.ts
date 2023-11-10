@@ -4,15 +4,15 @@ import type { ParsedQs } from 'qs';
 import type { ZodSchema } from 'zod';
 
 export type Route<
-  Route extends string = any,
-  P = RouteParameters<Route>,
+  Path extends string = any,
+  P = RouteParameters<Path>,
   ResBody = any,
   ReqBody = any,
   ReqQuery = ParsedQs,
   LocalsObj extends Record<string, any> = Record<string, any>,
 > = {
   method: 'all' | 'get' | 'post' | 'put' | 'delete' | 'patch' | 'options' | 'head';
-  path: Route;
+  path: Path;
   handlers: Array<RequestHandler<P, ResBody, ReqBody, ReqQuery, LocalsObj>>;
   schema?: Partial<{
     body: ZodSchema;

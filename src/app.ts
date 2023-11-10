@@ -1,13 +1,13 @@
 import express, { Router } from 'express';
 import http from 'node:http';
+import { zodMiddleware } from './middlewares/zodMiddleware';
 
 import type { Express, RequestHandler, ErrorRequestHandler } from 'express';
 import type { Server } from 'node:http';
 import type { Config } from './utils/config';
 import type { Logger } from 'pino';
 import type { MongoClient } from 'mongodb';
-import { Route } from './@types/routes';
-import { zodMiddleware } from './middlewares/zodMiddleware';
+import type { Route } from './@types/routes';
 
 export type CreateApp = (ctx: {
   config: Config;
