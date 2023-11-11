@@ -1,4 +1,6 @@
-import { container } from '@/ioc';
+import { createContainer } from '@/ioc';
+
+const container = createContainer();
 
 const { app, dbClient, terminator } = container.cradle;
 

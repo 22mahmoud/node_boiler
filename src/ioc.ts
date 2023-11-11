@@ -1,4 +1,4 @@
-import { asFunction, createContainer, InjectionMode } from 'awilix';
+import { asFunction, createContainer as awilixCreateContainer, InjectionMode } from 'awilix';
 
 import { createApp } from '@/app';
 import { resolvePostsDiConfig } from '@/features';
@@ -9,46 +9,48 @@ import { createConfig, createEnvSchema, terminator } from '@/utils';
 import type { AwilixContainer } from 'awilix';
 import type { ContainerRegister } from '@/types';
 
-export const container = createContainer<ContainerRegister>({
-  injectionMode: InjectionMode.PROXY,
-});
+export const createContainer = () => {
+  const container = awilixCreateContainer<ContainerRegister>({
+    injectionMode: InjectionMode.PROXY,
+  });
 
-container.register({
-  env: asFunction(createEnvSchema)
-    .singleton()
-    .inject(() => ({ env: process.env })),
+  container.register({
+    env: asFunction(createEnvSchema)
+      .singleton()
+      .inject(() => ({ env: process.env })),
 
-  config: asFunction(createConfig)
-    .singleton()
-    .inject((container) => ({ env: (container.cradle as any).env })),
+    config: asFunction(createConfig).singleton(),
 
-  logger: asFunction(createLogger).singleton(),
+    logger: asFunction(createLogger).singleton(),
 
-  dbClient: asFunction(createMongoClient).singleton(),
-  db: asFunction(getDb).singleton(),
+    dbClient: asFunction(createMongoClient).singleton(),
+    db: asFunction(getDb).singleton(),
 
-  error: asFunction(createApplicationError).singleton(),
+    error: asFunction(createApplicationError).singleton(),
 
-  middlewares: asFunction(createMiddlewares)
-    .singleton()
-    .inject((container) => ({ container })),
+    middlewares: asFunction(createMiddlewares)
+      .singleton()
+      .inject((container) => ({ container })),
 
-  terminator: asFunction(terminator)
-    .singleton()
-    .inject((container) => ({ container })),
+    terminator: asFunction(terminator)
+      .singleton()
+      .inject((container) => ({ container })),
 
-  ...resolvePostsDiConfig(),
+    ...resolvePostsDiConfig(),
 
-  app: asFunction(createApp)
-    .singleton()
-    .inject(() => {
-      const c = container.cradle as AwilixContainer<ContainerRegister>['cradle'];
+    app: asFunction(createApp)
+      .singleton()
+      .inject(() => {
+        const c = container.cradle as AwilixContainer<ContainerRegister>['cradle'];
 
-      return {
-        routes: Object.keys(c)
-          .filter((key) => key.endsWith('Router'))
-          .map((key) => c[key as keyof typeof c])
-          .flat(1),
-      };
-    }),
-});
+        return {
+          routes: Object.keys(c)
+            .filter((key) => key.endsWith('Router'))
+            .map((key) => c[key as keyof typeof c])
+            .flat(1),
+        };
+      }),
+  });
+
+  return container;
+};
