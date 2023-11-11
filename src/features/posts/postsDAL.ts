@@ -15,7 +15,7 @@ export const createPostsDAL = ({ db }: Deps) => {
     });
   };
 
-  const insertOne = (doc: { title: string }) => {
+  const insertOne = (doc: { title: string; body: string }) => {
     return posts.insertOne({ _id: new ObjectId(), ...doc });
   };
 
@@ -32,7 +32,7 @@ export const createPostsDAL = ({ db }: Deps) => {
     insertOne,
     find,
     deleteOneById,
-  };
+  } as const;
 };
 
 export type PostsDAL = ReturnType<typeof createPostsDAL>;

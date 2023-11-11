@@ -23,6 +23,7 @@ export type CreateMiddlewares = (ctx: {
 export const createMiddlewares: CreateMiddlewares = ({ container, config, logger }) => {
   const pre: RequestHandler[] | ErrorRequestHandler[] = [
     scopedContainerMiddleware({ container }),
+
     pinoHttp({
       logger,
       customLogLevel: (_req, res) => (res.statusCode >= 500 ? 'error' : 'info'),

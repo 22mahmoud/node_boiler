@@ -7,8 +7,8 @@ export type ErrorOptions<T> = {
 };
 
 class AppError<T> extends Error {
-  statusCode: HttpStatus;
-  data: T | null;
+  public statusCode: HttpStatus;
+  public data: T | null;
 
   constructor(options: ErrorOptions<T>) {
     const { statusCode = 500, data = null } = options;
@@ -16,7 +16,6 @@ class AppError<T> extends Error {
     const statusCodeErrorMessage = typeof statusCode === 'number' ? errorCodes.get(statusCode) : '';
 
     const message = options.message ?? statusCodeErrorMessage;
-
     super(message);
 
     this.statusCode = statusCode;

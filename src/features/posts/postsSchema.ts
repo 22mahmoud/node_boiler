@@ -5,4 +5,4 @@ export const createPostBodySchema = z.object({
   body: z.string(),
 });
 
-export type CreatePostBodySchema = z.infer<typeof createPostBodySchema>;
+export type CreatePostBody = z.infer<typeof createPostBodySchema>;

@@ -1,6 +1,5 @@
-import { NextFunction, Request, Response } from 'express';
-
 import type { ZodError, ZodSchema } from 'zod';
+import type { NextFunction, Request, Response } from 'express';
 
 type Validators = {
   body: ZodSchema;
@@ -34,8 +33,9 @@ export const zodMiddleware =
           return { type: item.key, ...result.error };
         }
 
-        req[item.key] = result.data;
+        Object.assign(req[item.key], result.data);
       })
+
       .filter(Boolean) as ({ type: Keys } & ZodError<any>)[];
 
     if (!errors.length) {

@@ -1,5 +1,7 @@
 import { Logger } from 'pino';
 
+import { CreatePostBody } from './postsSchema';
+
 import type { PostsDAL } from './postsDAL';
 
 export const createPostsService = ({ postsDAL }: { logger: Logger; postsDAL: PostsDAL }) => {
@@ -11,8 +13,8 @@ export const createPostsService = ({ postsDAL }: { logger: Logger; postsDAL: Pos
     return await postsDAL.find();
   };
 
-  const createPost = async ({ title }: { title: string }) => {
-    const { insertedId } = await postsDAL.insertOne({ title });
+  const createPost = async ({ title, body }: CreatePostBody) => {
+    const { insertedId } = await postsDAL.insertOne({ title, body });
 
     return await postsDAL.findOneById(insertedId);
   };

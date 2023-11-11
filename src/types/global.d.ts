@@ -1,4 +1,3 @@
-import type { AwilixContainer } from 'awilix';
 import type { ContainerRegister, EnvSchemaType } from '@/types';
 
 declare module 'http' {

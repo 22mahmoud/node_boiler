@@ -1,6 +1,7 @@
 import { asyncErrorWrapper } from '@/utils';
 
 import type { Request, Response } from 'express';
+import type { CreatePostBody } from './postsSchema';
 import type { PostsService } from './postsService';
 
 type Deps = {
@@ -22,10 +23,10 @@ export const createPostsController = ({ postsService }: Deps) => {
     res.json(post);
   };
 
-  const create = async (req: Request, res: Response) => {
-    const title = req.body.title as string;
+  const create = async (req: Request<any, any, CreatePostBody>, res: Response) => {
+    const { title, body } = req.body;
 
-    const post = await postsService.createPost({ title });
+    const post = await postsService.createPost({ title, body });
 
     res.json(post);
   };
