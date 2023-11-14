@@ -8,8 +8,10 @@ const envSchema = z
     ELASTICSEARCH_URL: z.string().url().optional(),
     ELASTICSEARCH_API_KEY: z.string().optional(),
 
-    MONGO_URI: z.string().url(),
+    MONGO_URI: z.string().trim().url(),
     DB_NAME: z.string().trim(),
+
+    REDIS_URI: z.string().trim().url(),
   })
   .refine((values) => !values.ELASTICSEARCH_URL?.length, {
     message: 'ELASTICSEARCH_API_KEY is required if ELASTICSEARCH_URL exists',

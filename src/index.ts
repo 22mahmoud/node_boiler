@@ -2,13 +2,12 @@ import { createContainer } from '@/ioc';
 
 const container = createContainer();
 
-const { app, dbClient, terminator } = container.cradle;
+const { app, dbClient, terminator, redisClient } = container.cradle;
 
 app().then(async ({ server, listen }) => {
-  await dbClient.connect();
+  await Promise.all([dbClient.connect(), redisClient.connect()]);
 
   listen();
 
-  process.on('SIGINT', terminator(server));
-  process.on('SIGTERM', terminator(server));
+  process.on('SIGINT', terminator(server)).on('SIGTERM', terminator(server));
 });

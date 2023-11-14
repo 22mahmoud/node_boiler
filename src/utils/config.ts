@@ -14,6 +14,8 @@ export const createConfig = ({ env }: { env: EnvSchemaType }) => {
 
     mongoUri: env.MONGO_URI,
     dbName: env.DB_NAME,
+
+    redisUri: env.REDIS_URI,
   };
 };
 

@@ -2,7 +2,13 @@ import { asFunction, createContainer as awilixCreateContainer, InjectionMode } f
 
 import { createApp } from '@/app';
 import { resolvePostsDiConfig } from '@/features';
-import { createApplicationError, createLogger, createMongoClient, getDb } from '@/lib';
+import {
+  createApplicationError,
+  createLogger,
+  createMongoClient,
+  createRedisClient,
+  getDb,
+} from '@/lib';
 import { createMiddlewares } from '@/middlewares';
 import { createConfig, createEnvSchema, terminator } from '@/utils';
 
@@ -25,6 +31,8 @@ export const createContainer = () => {
 
     dbClient: asFunction(createMongoClient).singleton(),
     db: asFunction(getDb).singleton(),
+
+    redisClient: asFunction(createRedisClient).singleton(),
 
     error: asFunction(createApplicationError).singleton(),
 
