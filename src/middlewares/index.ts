@@ -9,18 +9,19 @@ import { registerLoggerMiddleware, scopedContainerMiddleware } from './scopedCon
 
 import type { Logger } from 'pino';
 import type { ErrorRequestHandler, RequestHandler } from 'express';
-import type { Config, ContainerRegister } from '@/types';
+import type { Config, ContainerRegister, CreateSentry } from '@/types';
 
 export type CreateMiddlewares = (ctx: {
   config: Config;
   logger: Logger;
   container: AwilixContainer<ContainerRegister>;
+  sentry: CreateSentry;
 }) => {
   pre: RequestHandler[] | ErrorRequestHandler[];
   post: RequestHandler[] | ErrorRequestHandler[];
 };
 
-export const createMiddlewares: CreateMiddlewares = ({ container, config, logger }) => {
+export const createMiddlewares: CreateMiddlewares = ({ container, config, logger, sentry }) => {
   const pre: RequestHandler[] | ErrorRequestHandler[] = [
     scopedContainerMiddleware({ container }),
 
@@ -38,9 +39,15 @@ export const createMiddlewares: CreateMiddlewares = ({ container, config, logger
     express.json(),
 
     express.urlencoded({ extended: true }),
+
+    sentry.Handlers.requestHandler(),
+    sentry.Handlers.tracingHandler(),
   ];
 
-  const post: RequestHandler[] | ErrorRequestHandler[] = [errorMiddleware({ config })];
+  const post: RequestHandler[] | ErrorRequestHandler[] = [
+    sentry.Handlers.errorHandler(),
+    errorMiddleware({ config }),
+  ];
 
   return { post, pre };
 };

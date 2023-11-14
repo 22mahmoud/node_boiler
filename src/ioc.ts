@@ -1,12 +1,13 @@
 import { asFunction, createContainer as awilixCreateContainer, InjectionMode } from 'awilix';
 
-import { createApp } from '@/app';
+import { createApp, createExpress } from '@/app';
 import { resolvePostsDiConfig } from '@/features';
 import {
   createApplicationError,
   createLogger,
   createMongoClient,
   createRedisClient,
+  createSentry,
   getDb,
 } from '@/lib';
 import { createMiddlewares } from '@/middlewares';
@@ -36,6 +37,10 @@ export const createContainer = () => {
 
     error: asFunction(createApplicationError).singleton(),
 
+    app: asFunction(createExpress).singleton(),
+
+    sentry: asFunction(createSentry).singleton(),
+
     middlewares: asFunction(createMiddlewares)
       .singleton()
       .inject((container) => ({ container })),
@@ -46,7 +51,7 @@ export const createContainer = () => {
 
     ...resolvePostsDiConfig(),
 
-    app: asFunction(createApp)
+    createApp: asFunction(createApp)
       .singleton()
       .inject(() => {
         const c = container.cradle as AwilixContainer<ContainerRegister>['cradle'];

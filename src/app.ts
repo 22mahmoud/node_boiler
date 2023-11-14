@@ -12,7 +12,7 @@ import type { ErrorRequestHandler, Express, RequestHandler } from 'express';
 import type { Route } from '@/types';
 import type { Config } from '@/utils';
 
-export type CreateApp = (ctx: {
+export type Deps = {
   config: Config;
   logger: Logger;
   dbClient: MongoClient;
@@ -21,7 +21,8 @@ export type CreateApp = (ctx: {
     post?: RequestHandler[] | ErrorRequestHandler[];
   };
   routes: Route[];
-}) => () => Promise<{ server: Server; listen: () => void }>;
+  app: Express;
+};
 
 const createUseMiddlewares =
   (app: Express) =>
@@ -58,11 +59,14 @@ const createUseApiRoutes =
     app.use(router);
   };
 
-export const createApp: CreateApp =
-  ({ middlewares, routes, config, logger }) =>
-  () =>
+export const createExpress = () => {
+  return express();
+};
+
+export const createApp =
+  ({ middlewares, routes, config, logger, app }: Deps) =>
+  (): Promise<{ server: Server; listen: () => void }> =>
     new Promise((resolve) => {
-      const app = express();
       const useMiddlewares = createUseMiddlewares(app);
       const useApiRoutes = createUseApiRoutes({ app, logger });
 
@@ -81,4 +85,4 @@ export const createApp: CreateApp =
       resolve({ server, listen });
     });
 
-export type App = ReturnType<typeof createApp>;
+export type CreateApp = ReturnType<typeof createApp>;

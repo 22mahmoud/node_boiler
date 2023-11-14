@@ -10,7 +10,6 @@ export const createPostsController = ({ postsService }: Deps) => {
   const list = async (_req: Request, res: Response) => {
     const posts = await postsService.getPosts();
 
-    throw new Error('test');
     res.json(posts);
   };
 

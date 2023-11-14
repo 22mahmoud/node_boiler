@@ -16,6 +16,8 @@ export const createConfig = ({ env }: { env: EnvSchemaType }) => {
     dbName: env.DB_NAME,
 
     redisUri: env.REDIS_URI,
+
+    sentryDsn: env.SENTRY_DSN,
   };
 };
 

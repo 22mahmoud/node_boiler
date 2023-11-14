@@ -12,6 +12,8 @@ const envSchema = z
     DB_NAME: z.string().trim(),
 
     REDIS_URI: z.string().trim().url(),
+
+    SENTRY_DSN: z.string().trim().url(),
   })
   .refine((values) => !values.ELASTICSEARCH_URL?.length, {
     message: 'ELASTICSEARCH_API_KEY is required if ELASTICSEARCH_URL exists',

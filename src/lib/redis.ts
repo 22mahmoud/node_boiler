@@ -14,12 +14,12 @@ export const createRedisClient = ({ logger, config }: Deps) => {
     logger.info(`Redis connected`);
   });
 
-  client.on('reconnecting', (info) => {
-    logger.info(`Redis reconnection attempt #${info.attempt}, delay ${info.delay} ms`);
+  client.on('reconnecting', () => {
+    logger.info(`Redis reconnection attempt`);
   });
 
-  client.on('error', (err) => {
-    logger.error('Redis error', err);
+  client.on('error', (error) => {
+    logger.error('Redis error', error);
   });
 
   return client;

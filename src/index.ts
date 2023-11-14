@@ -2,9 +2,9 @@ import { createContainer } from '@/ioc';
 
 const container = createContainer();
 
-const { app, dbClient, terminator, redisClient } = container.cradle;
+const { createApp, dbClient, terminator, redisClient } = container.cradle;
 
-app().then(async ({ server, listen }) => {
+createApp().then(async ({ server, listen }) => {
   await Promise.all([dbClient.connect(), redisClient.connect()]);
 
   listen();
