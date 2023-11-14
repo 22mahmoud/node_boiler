@@ -1,7 +1,9 @@
 import http from 'node:http';
 import express, { Router } from 'express';
+import { map } from 'ramda';
 
 import { zodMiddleware } from '@/middlewares/zodMiddleware';
+import { asyncErrorWrapper } from '@/utils';
 
 import type { MongoClient } from 'mongodb';
 import type { Server } from 'node:http';
@@ -39,8 +41,16 @@ const createUseApiRoutes =
         return;
       }
 
-      // eslint-disable-next-line security/detect-object-injection
-      router.use('/api/v1', router[method](path, zodMiddleware(schema ?? {}), ...handlers));
+      router.use(
+        '/api/v1',
+
+        // eslint-disable-next-line security/detect-object-injection
+        router[method](
+          path,
+          zodMiddleware(schema ?? {}),
+          ...map(asyncErrorWrapper, handlers as any[]),
+        ),
+      );
 
       logger.info(':%s "%s" route initialized!', method.toUpperCase(), path);
     });
