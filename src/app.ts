@@ -11,6 +11,8 @@ import type { ErrorRequestHandler, Express, RequestHandler } from 'express';
 import type { Logger, Route } from '@/types';
 import type { Config } from '@/utils';
 
+const LONGEST_METHOD_CHARS = 7; // options
+
 export type Deps = {
   config: Config;
   logger: Logger;
@@ -24,7 +26,7 @@ export type Deps = {
 };
 
 const createUseMiddlewares =
-  (app: Express) =>
+  ({ app }: { app: Express; logger: Logger }) =>
   (middlewares: RequestHandler[] | ErrorRequestHandler[] = []) => {
     middlewares.forEach((handler) => {
       app.use(handler);
@@ -52,7 +54,14 @@ const createUseApiRoutes =
         ),
       );
 
-      logger.bootstrap(':%s "%s" route initialized!', method.toUpperCase(), path);
+      logger.bootstrap(
+        ':%s%s  %s',
+        method.toUpperCase(),
+        Array(LONGEST_METHOD_CHARS - method.length)
+          .fill(' ')
+          .join(''),
+        path,
+      );
     });
 
     app.use(router);
@@ -66,18 +75,22 @@ export const createApp =
   ({ middlewares, routes, config, logger, app }: Deps) =>
   (): Promise<{ server: Server; listen: () => void }> =>
     new Promise((resolve) => {
-      const useMiddlewares = createUseMiddlewares(app);
+      const useMiddlewares = createUseMiddlewares({ app, logger });
       const useApiRoutes = createUseApiRoutes({ app, logger });
 
       useMiddlewares(middlewares?.pre);
+
+      logger.bootstrap(' - - - <ROUTES>  - - - - ');
       useApiRoutes(routes);
+      logger.bootstrap(' - - - </ROUTES> - - - - ');
+
       useMiddlewares(middlewares?.post);
 
       const server = http.createServer(app);
 
       const listen = () => {
         server.listen(config.port, () => {
-          logger.bootstrap(`Server is running on port ${config.port}`);
+          logger.info(`Server is running on port ${config.port}`);
         });
       };
 
