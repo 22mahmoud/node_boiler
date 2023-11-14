@@ -20,9 +20,10 @@ export const createSentry = ({ config, app, logger }: Deps) => {
     ],
     tracesSampleRate: 1.0,
     profilesSampleRate: 1.0,
+    enabled: config.isProd,
   });
 
-  logger.info('Sentry is initialised');
+  logger.bootstrap('Sentry is initialised');
 
   return Sentry;
 };

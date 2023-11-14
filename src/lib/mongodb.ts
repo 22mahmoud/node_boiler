@@ -1,7 +1,6 @@
 import { MongoClient } from 'mongodb';
 
-import type { Logger } from 'pino';
-import type { Config } from '../utils/config';
+import type { Config, Logger } from '@/types';
 
 export type CreateMongoClient = (ctx: { config: Config; logger: Logger }) => MongoClient;
 
@@ -15,7 +14,7 @@ export const createMongoClient: CreateMongoClient = ({ config, logger }) => {
   client.on('commandFailed', (event) => logger.error(event));
 
   client.on('serverOpening', () => {
-    logger.info('MongoDb default connection connected');
+    logger.bootstrap('MongoDb default connection connected');
   });
 
   client.on('error', (error) => {

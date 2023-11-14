@@ -7,9 +7,8 @@ import { asyncErrorWrapper } from '@/utils';
 
 import type { MongoClient } from 'mongodb';
 import type { Server } from 'node:http';
-import type { Logger } from 'pino';
 import type { ErrorRequestHandler, Express, RequestHandler } from 'express';
-import type { Route } from '@/types';
+import type { Logger, Route } from '@/types';
 import type { Config } from '@/utils';
 
 export type Deps = {
@@ -53,7 +52,7 @@ const createUseApiRoutes =
         ),
       );
 
-      logger.info(':%s "%s" route initialized!', method.toUpperCase(), path);
+      logger.bootstrap(':%s "%s" route initialized!', method.toUpperCase(), path);
     });
 
     app.use(router);
@@ -78,7 +77,7 @@ export const createApp =
 
       const listen = () => {
         server.listen(config.port, () => {
-          logger.info(`Server is running on port ${config.port}`);
+          logger.bootstrap(`Server is running on port ${config.port}`);
         });
       };
 

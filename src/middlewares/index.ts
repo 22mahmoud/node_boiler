@@ -7,9 +7,8 @@ import pinoHttp from 'pino-http';
 import { errorMiddleware } from './errorMiddleware';
 import { registerLoggerMiddleware, scopedContainerMiddleware } from './scopedContainerMiddleware';
 
-import type { Logger } from 'pino';
 import type { ErrorRequestHandler, RequestHandler } from 'express';
-import type { Config, ContainerRegister, CreateSentry } from '@/types';
+import type { Config, ContainerRegister, CreateSentry, Logger } from '@/types';
 
 export type CreateMiddlewares = (ctx: {
   config: Config;

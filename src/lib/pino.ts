@@ -4,8 +4,18 @@ import pino from 'pino';
 import type { TransportTargetOptions } from 'pino';
 import type { Config } from '../utils/config';
 
+const levels = {
+  bootstrap: 5,
+  trace: 10,
+  debug: 20,
+  info: 30,
+  warn: 40,
+  error: 50,
+  fatal: 60,
+} as const;
+
 export const createLogger = ({ config }: { config: Config }) => {
-  const level = 'trace';
+  const level = 'bootstrap';
 
   const ecsOptions = ecsFormat({
     convertReqRes: true,
@@ -26,7 +36,7 @@ export const createLogger = ({ config }: { config: Config }) => {
   };
 
   const prettyTransport: TransportTargetOptions = {
-    level,
+    level: 5 as any,
     target: 'pino-pretty',
     options: {
       timestampKey: '@timestamp',
@@ -34,6 +44,18 @@ export const createLogger = ({ config }: { config: Config }) => {
       colorize: true,
       translateTime: 'SYS:dd-mm-yyyy hh:MM:ss TT',
       singleLine: true,
+      customLevels: levels,
+      minimumLevel: 'bootstrap',
+      customColors: [
+        'bootstrap:magenta',
+        'trace:gray',
+        'debug:blue',
+        'info:green',
+        'warn:yellow',
+        'error:red',
+        'fetal:red',
+      ].join(','),
+      useOnlyCustomProps: true,
       ignore: [
         'process\\.pid',
         'host\\.hostname',
@@ -61,6 +83,8 @@ export const createLogger = ({ config }: { config: Config }) => {
   const logger = pino(
     {
       level,
+      customLevels: levels,
+      useOnlyCustomLevels: true,
       ...ecsOptions,
       formatters: {
         ...ecsOptions.formatters,
@@ -84,3 +108,5 @@ export const createLogger = ({ config }: { config: Config }) => {
 
   return logger;
 };
+
+export type Logger = ReturnType<typeof createLogger>;

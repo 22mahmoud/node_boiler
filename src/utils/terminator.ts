@@ -1,7 +1,7 @@
 import type { AwilixContainer } from 'awilix';
 import type { IncomingMessage, Server, ServerResponse } from 'http';
 import type { MongoClient } from 'mongodb';
-import type { Logger } from 'pino';
+import type { Logger } from '@/types';
 
 interface Deps {
   logger: Logger;

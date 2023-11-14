@@ -1,7 +1,6 @@
-import { Logger } from 'pino';
-
 import { CreatePostBody } from './postsSchema';
 
+import type { Logger } from '@/types';
 import type { PostsDAL } from './postsDAL';
 
 export const createPostsService = ({ postsDAL }: { logger: Logger; postsDAL: PostsDAL }) => {

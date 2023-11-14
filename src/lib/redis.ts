@@ -11,7 +11,7 @@ export const createRedisClient = ({ logger, config }: Deps) => {
   const client = createClient({ url: config.redisUri });
 
   client.on('connect', () => {
-    logger.info(`Redis connected`);
+    logger.bootstrap(`Redis connected`);
   });
 
   client.on('reconnecting', () => {
