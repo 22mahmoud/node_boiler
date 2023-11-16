@@ -38,4 +38,4 @@ export const createApplicationError = () => ({
   unauthorized: createThrow(HttpStatus.Unauthorized),
 });
 
-export type CreateApplicationError = ReturnType<typeof createApplicationError>;
+export type ApplicationError = ReturnType<typeof createApplicationError>;

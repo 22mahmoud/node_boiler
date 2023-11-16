@@ -1,14 +1,8 @@
 import type { Db, MongoClient } from 'mongodb';
 import type { Express } from 'express';
-import type { CreateApp } from '@/app';
+import type { App } from '@/app';
 import type { PostsController, PostsDAL, PostsRouter, PostsService } from '@/features';
-import type {
-  CreateApplicationError,
-  CreateRedisClient,
-  CreateSentry,
-  HttpStatus,
-  Logger,
-} from '@/lib';
+import type { ApplicationError, HttpStatus, Logger, RedisClient, Sentry } from '@/lib';
 import type { Middlewares } from '@/middlewares';
 import type { Config, EnvSchemaType, Terminator } from '@/utils';
 import type { Route } from './routes';
@@ -24,10 +18,10 @@ export interface ContainerRegister {
   middlewares: Middlewares;
   terminator: Terminator;
   app: Express;
-  createApp: CreateApp;
-  error: CreateApplicationError;
-  redisClient: CreateRedisClient;
-  sentry: CreateSentry;
+  createApp: App;
+  error: ApplicationError;
+  redisClient: RedisClient;
+  sentry: Sentry;
 
   postsDAL: PostsDAL;
   postsRouter: PostsRouter;
@@ -43,14 +37,14 @@ export {
   Config,
   Terminator,
   Middlewares,
-  CreateApp,
+  App,
   PostsDAL,
   PostsRouter,
   PostsService,
   PostsController,
   Route,
   EnvSchemaType,
-  CreateApplicationError,
-  CreateSentry,
-  CreateRedisClient,
+  ApplicationError,
+  Sentry,
+  RedisClient,
 };

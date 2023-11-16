@@ -1,4 +1,4 @@
-import * as Sentry from '@sentry/node';
+import * as sentry from '@sentry/node';
 import { ProfilingIntegration } from '@sentry/profiling-node';
 
 import type { Express } from 'express';
@@ -11,11 +11,11 @@ type Deps = {
 };
 
 export const createSentry = ({ config, app, logger }: Deps) => {
-  Sentry.init({
+  sentry.init({
     dsn: config.sentryDsn,
     integrations: [
-      new Sentry.Integrations.Http({ tracing: true }),
-      new Sentry.Integrations.Express({ app }),
+      new sentry.Integrations.Http({ tracing: true }),
+      new sentry.Integrations.Express({ app }),
       new ProfilingIntegration(),
     ],
     tracesSampleRate: 1.0,
@@ -25,7 +25,7 @@ export const createSentry = ({ config, app, logger }: Deps) => {
 
   logger.bootstrap('Sentry is initialised');
 
-  return Sentry;
+  return sentry;
 };
 
-export type CreateSentry = ReturnType<typeof createSentry>;
+export type Sentry = ReturnType<typeof createSentry>;

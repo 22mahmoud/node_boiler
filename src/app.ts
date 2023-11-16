@@ -6,7 +6,6 @@ import { zodMiddleware } from '@/middlewares/zodMiddleware';
 import { asyncErrorWrapper } from '@/utils';
 
 import type { MongoClient } from 'mongodb';
-import type { Server } from 'node:http';
 import type { ErrorRequestHandler, Express, RequestHandler } from 'express';
 import type { Logger, Route } from '@/types';
 import type { Config } from '@/utils';
@@ -73,28 +72,27 @@ export const createExpress = () => {
 
 export const createApp =
   ({ middlewares, routes, config, logger, app }: Deps) =>
-  (): Promise<{ server: Server; listen: () => void }> =>
-    new Promise((resolve) => {
-      const useMiddlewares = createUseMiddlewares({ app, logger });
-      const useApiRoutes = createUseApiRoutes({ app, logger });
+  () => {
+    const useMiddlewares = createUseMiddlewares({ app, logger });
+    const useApiRoutes = createUseApiRoutes({ app, logger });
 
-      useMiddlewares(middlewares?.pre);
+    useMiddlewares(middlewares?.pre);
 
-      logger.bootstrap(' - - - <ROUTES>  - - - - ');
-      useApiRoutes(routes);
-      logger.bootstrap(' - - - </ROUTES> - - - - ');
+    logger.bootstrap(' - - - <ROUTES>  - - - - ');
+    useApiRoutes(routes);
+    logger.bootstrap(' - - - </ROUTES> - - - - ');
 
-      useMiddlewares(middlewares?.post);
+    useMiddlewares(middlewares?.post);
 
-      const server = http.createServer(app);
+    const server = http.createServer(app);
 
-      const listen = () => {
-        server.listen(config.port, () => {
-          logger.info(`Server is running on port ${config.port}`);
-        });
-      };
+    const listen = () => {
+      server.listen(config.port, () => {
+        logger.info(`Server is running on port ${config.port}`);
+      });
+    };
 
-      resolve({ server, listen });
-    });
+    return { server, listen };
+  };
 
-export type CreateApp = ReturnType<typeof createApp>;
+export type App = ReturnType<typeof createApp>;

@@ -1,12 +1,14 @@
 import type { AwilixContainer } from 'awilix';
 import type { IncomingMessage, Server, ServerResponse } from 'http';
 import type { MongoClient } from 'mongodb';
-import type { Logger } from '@/types';
+import type { Logger, RedisClient, Sentry } from '@/types';
 
 interface Deps {
   logger: Logger;
   dbClient: MongoClient;
   container: AwilixContainer;
+  redisClient: RedisClient;
+  sentry: Sentry;
 }
 
 export type Terminator = (
@@ -14,7 +16,7 @@ export type Terminator = (
 ) => (signal: NodeJS.Signals) => void;
 
 export const terminator: (deps: Deps) => Terminator =
-  ({ dbClient, logger, container }) =>
+  ({ dbClient, logger, container, redisClient, sentry }) =>
   (server) => {
     const closeServer = () =>
       new Promise<void>((resolve, reject) => {
@@ -52,6 +54,28 @@ export const terminator: (deps: Deps) => Terminator =
           throw error;
         });
 
+    const closeRedisConnection = () =>
+      redisClient
+        .quit()
+        .then(() => {
+          logger.info('Closed Redis Client connection');
+        })
+        .catch((error) => {
+          logger.error('Error while closing redis client', error);
+          throw error;
+        });
+
+    const closeSentry = () =>
+      sentry
+        .close()
+        .then(() => {
+          logger.info('Closed Sentry');
+        })
+        .catch((error) => {
+          logger.error('Error while closing Sentry', error);
+          throw error;
+        });
+
     return async (signal) => {
       logger.info(`Got ${signal}. Graceful shutdown start`);
 
@@ -60,6 +84,8 @@ export const terminator: (deps: Deps) => Terminator =
       try {
         await closeServer();
         await closeMongoConnection();
+        await closeRedisConnection();
+        await closeSentry();
         await diposeContainer();
 
         process.exit(0);

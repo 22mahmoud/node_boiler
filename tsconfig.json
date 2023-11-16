@@ -9,23 +9,23 @@
   },
 
   "compilerOptions": {
-    "rootDir": ".",
-    "outDir": "dist",
     "lib": ["es2023"],
-    "module": "node16",
+    "module": "commonjs",
     "target": "es2022",
     "typeRoots": ["src/types"],
-    "baseUrl": ".",
 
+    "rootDir": ".",
+    "outDir": "dist",
+    "baseUrl": "src",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["*"]
     },
 
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node16",
+    "moduleResolution": "node",
     "sourceMap": true,
     "inlineSources": true,
     "sourceRoot": "/"

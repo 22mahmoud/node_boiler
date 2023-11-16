@@ -25,4 +25,4 @@ export const createRedisClient = ({ logger, config }: Deps) => {
   return client;
 };
 
-export type CreateRedisClient = ReturnType<typeof createRedisClient>;
+export type RedisClient = ReturnType<typeof createRedisClient>;
