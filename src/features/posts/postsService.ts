@@ -1,18 +1,18 @@
-import { CreatePostBody } from './postsSchema';
+import type { Deps } from '@/types';
+import type { CreatePost } from './postsSchema';
 
-import type { Logger } from '@/types';
-import type { PostsDAL } from './postsDAL';
-
-export const createPostsService = ({ postsDAL }: { logger: Logger; postsDAL: PostsDAL }) => {
+export const createPostsService = ({ postsDAL, postsDto }: Deps) => {
   const getPostById = async (id: string) => {
-    return await postsDAL.findOneById(id);
+    const post = await postsDAL.findOneById(id);
+
+    return postsDto.convertFromEntity(post);
   };
 
   const getPosts = async () => {
     return await postsDAL.find();
   };
 
-  const createPost = async ({ title, body }: CreatePostBody) => {
+  const createPost = async ({ title, body }: CreatePost) => {
     const { insertedId } = await postsDAL.insertOne({ title, body });
 
     return await postsDAL.findOneById(insertedId);

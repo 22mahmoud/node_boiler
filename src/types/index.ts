@@ -1,7 +1,15 @@
 import type { Db, MongoClient } from 'mongodb';
 import type { Express } from 'express';
 import type { App } from '@/app';
-import type { PostsController, PostsDAL, PostsRouter, PostsService } from '@/features';
+import type {
+  PostsController,
+  PostsDAL,
+  PostsDTO,
+  PostsDTOFactory,
+  PostsModel,
+  PostsRouter,
+  PostsService,
+} from '@/features';
 import type { ApplicationError, HttpStatus, Logger, RedisClient, Sentry } from '@/lib';
 import type { Middlewares } from '@/middlewares';
 import type { Config, EnvSchemaType, Terminator } from '@/utils';
@@ -9,7 +17,7 @@ import type { Route } from './routes';
 
 export type NODE_ENV = 'production' | 'development' | 'test';
 
-export interface ContainerRegister {
+export interface Deps {
   config: Config;
   logger: Logger;
   dbClient: MongoClient;
@@ -27,6 +35,7 @@ export interface ContainerRegister {
   postsRouter: PostsRouter;
   postsService: PostsService;
   postsController: PostsController;
+  postsDto: PostsDTOFactory;
 }
 
 export {
@@ -47,4 +56,7 @@ export {
   ApplicationError,
   Sentry,
   RedisClient,
+  PostsDTO,
+  PostsDTOFactory,
+  PostsModel,
 };

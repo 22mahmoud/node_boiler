@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
-export const createPostBodySchema = z.object({
+export const createPostSchema = z.object({
   title: z.string().trim(),
   body: z.string(),
 });
 
-export type CreatePostBody = z.infer<typeof createPostBodySchema>;
+export type CreatePost = z.infer<typeof createPostSchema>;

@@ -10,7 +10,7 @@ import type { ErrorRequestHandler, Express, RequestHandler } from 'express';
 import type { Logger, Route } from '@/types';
 import type { Config } from '@/utils';
 
-const LONGEST_METHOD_CHARS = 7; // options
+const LONGEST_METHOD_CHARS = 7; // app.options(..)
 
 export type Deps = {
   config: Config;

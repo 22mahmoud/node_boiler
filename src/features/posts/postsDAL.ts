@@ -1,12 +1,9 @@
 import { ObjectId } from 'mongodb';
 
-import type { Db } from 'mongodb';
-import type { Config, Logger } from '@/types';
-
-type Deps = { logger: Logger; config: Config; db: Db };
+import type { Deps, PostsModel } from '@/types';
 
 export const createPostsDAL = ({ db }: Deps) => {
-  const posts = db.collection('posts');
+  const posts = db.collection<PostsModel>('posts');
 
   const findOneById = (id: string | ObjectId) => {
     return posts.findOne({
@@ -14,8 +11,13 @@ export const createPostsDAL = ({ db }: Deps) => {
     });
   };
 
-  const insertOne = (doc: { title: string; body: string }) => {
-    return posts.insertOne({ _id: new ObjectId(), ...doc });
+  const insertOne = (doc: Omit<PostsModel, 'created_at' | 'updated_at' | '_id'>) => {
+    return posts.insertOne({
+      ...doc,
+      created_at: new Date(),
+      updated_at: new Date(),
+      _id: new ObjectId(),
+    });
   };
 
   const find = () => {

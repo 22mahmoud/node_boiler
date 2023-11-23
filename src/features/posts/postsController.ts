@@ -1,10 +1,6 @@
 import type { Request, Response } from 'express';
-import type { CreatePostBody } from './postsSchema';
-import type { PostsService } from './postsService';
-
-type Deps = {
-  postsService: PostsService;
-};
+import type { Deps } from '@/types';
+import type { CreatePost } from './postsSchema';
 
 export const createPostsController = ({ postsService }: Deps) => {
   const list = async (_req: Request, res: Response) => {
@@ -21,7 +17,7 @@ export const createPostsController = ({ postsService }: Deps) => {
     res.json(post);
   };
 
-  const create = async (req: Request<any, any, CreatePostBody>, res: Response) => {
+  const create = async (req: Request<any, any, CreatePost>, res: Response) => {
     const { title, body } = req.body;
 
     const post = await postsService.createPost({ title, body });

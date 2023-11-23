@@ -11,14 +11,14 @@ import {
 
 import { asyncErrorWrapper } from './asyncErrorWrapper';
 
-import type { ContainerRegister } from '@/types';
+import type { Deps } from '@/types';
 
 export function makeInvoker<T>(fn: FunctionReturning<T>, opts?: ResolverOptions<T>) {
   const resolver = asFunction(fn, opts);
 
   return <K extends keyof T>(method: K) =>
     async (req: Request, res: Response, next: NextFunction) => {
-      const container: AwilixContainer<ContainerRegister> = req.container;
+      const container: AwilixContainer<Deps> = req.container;
       const resolved: Record<K, any> = container.build(resolver);
 
       assert(
@@ -41,7 +41,7 @@ export function inject(factory: ClassOrFunctionReturning<any> | Resolver<any>) {
   const resolver = typeof factory === 'function' ? asFunction(factory as any) : factory;
 
   return async (req: Request, res: Response, next: NextFunction) => {
-    const container: AwilixContainer<ContainerRegister> = req.container;
+    const container: AwilixContainer<Deps> = req.container;
     const resolved: any = container.build(resolver);
 
     return asyncErrorWrapper(await resolved)(req, res, next);

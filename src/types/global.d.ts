@@ -1,8 +1,8 @@
-import type { ContainerRegister, EnvSchemaType } from '@/types';
+import type { Deps, EnvSchemaType } from '@/types';
 
 declare module 'http' {
   interface IncomingMessage {
-    container: AwilixContainer<ContainerRegister>;
+    container: AwilixContainer<Deps>;
   }
 }
 

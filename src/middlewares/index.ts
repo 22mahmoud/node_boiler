@@ -8,14 +8,9 @@ import { errorMiddleware } from './errorMiddleware';
 import { registerLoggerMiddleware, scopedContainerMiddleware } from './scopedContainerMiddleware';
 
 import type { ErrorRequestHandler, RequestHandler } from 'express';
-import type { Config, ContainerRegister, Logger, Sentry } from '@/types';
+import type { Deps } from '@/types';
 
-export type CreateMiddlewares = (ctx: {
-  config: Config;
-  logger: Logger;
-  container: AwilixContainer<ContainerRegister>;
-  sentry: Sentry;
-}) => {
+export type CreateMiddlewares = (ctx: Deps & { container: AwilixContainer<Deps> }) => {
   pre: RequestHandler[] | ErrorRequestHandler[];
   post: RequestHandler[] | ErrorRequestHandler[];
 };

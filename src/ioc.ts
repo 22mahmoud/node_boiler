@@ -14,10 +14,10 @@ import { createMiddlewares } from '@/middlewares';
 import { createConfig, createEnvSchema, terminator } from '@/utils';
 
 import type { AwilixContainer } from 'awilix';
-import type { ContainerRegister } from '@/types';
+import type { Deps } from '@/types';
 
 export const createContainer = () => {
-  const container = awilixCreateContainer<ContainerRegister>({
+  const container = awilixCreateContainer<Deps>({
     injectionMode: InjectionMode.PROXY,
   });
 
@@ -54,7 +54,7 @@ export const createContainer = () => {
     createApp: asFunction(createApp)
       .singleton()
       .inject(() => {
-        const c = container.cradle as AwilixContainer<ContainerRegister>['cradle'];
+        const c = container.cradle as AwilixContainer<Deps>['cradle'];
 
         return {
           routes: Object.keys(c)
